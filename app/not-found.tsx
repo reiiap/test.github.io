@@ -1,0 +1,1 @@
+import Link from "next/link";export default function NotFound(){return <main className="section text-center"><h1 className="text-6xl font-black">404</h1><p className="muted mt-3">This route drifted outside the studio grid.</p><Link className="btn btn-primary mt-8" href="/">Return home</Link></main>}
