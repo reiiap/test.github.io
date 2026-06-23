@@ -1,0 +1,5 @@
+import { Card } from "@/components/ui/card";
+
+export default function AboutPage() {
+  return <main className="section"><div className="max-w-3xl"><p className="text-cyan-300">About</p><h1 className="mt-2 text-4xl font-black">A focused development partner for modern SaaS businesses</h1><p className="mt-5 text-lg leading-8 text-slate-300">ReiiKajurawa Development Service combines product strategy, full-stack engineering, and deployment operations to help teams launch reliable digital platforms.</p></div><div className="mt-10 grid gap-6 md:grid-cols-3"><Card><h2 className="font-bold">Discovery first</h2><p className="mt-3 text-slate-300">We clarify goals, risks, users, and technical constraints before writing production code.</p></Card><Card><h2 className="font-bold">Clean architecture</h2><p className="mt-3 text-slate-300">Reusable modules, validated inputs, server-first data fetching, and maintainable boundaries.</p></Card><Card><h2 className="font-bold">Launch support</h2><p className="mt-3 text-slate-300">Vercel deployment, database migrations, monitoring readiness, and practical handover.</p></Card></div></main>;
+}

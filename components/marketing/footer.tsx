@@ -1,0 +1,3 @@
+export function Footer() {
+  return <footer className="border-t border-white/10 bg-slate-950"><div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 text-sm text-slate-400 sm:px-6 md:grid-cols-3 lg:px-8"><div><p className="font-black text-white">ReiiKajurawa Development Service</p><p className="mt-3">Production-grade software for founders, agencies, and scaling teams.</p></div><div><p className="font-semibold text-white">Contact</p><p className="mt-3">hello@reii.com</p><p>Remote-first delivery worldwide</p></div><div><p className="font-semibold text-white">Stack</p><p className="mt-3">Next.js, PostgreSQL, Prisma, Auth, Vercel.</p></div></div></footer>;
+}

@@ -1,1 +1,5 @@
-import Link from "next/link";export default function NotFound(){return <main className="section text-center"><h1 className="text-6xl font-black">404</h1><p className="muted mt-3">This route drifted outside the studio grid.</p><Link className="btn btn-primary mt-8" href="/">Return home</Link></main>}
+import { ButtonLink } from "@/components/ui/button";
+
+export default function NotFound() {
+  return <main className="section text-center"><h1 className="text-5xl font-black">Page not found</h1><p className="mt-4 text-slate-300">The page you requested does not exist.</p><div className="mt-8"><ButtonLink href="/">Go home</ButtonLink></div></main>;
+}
