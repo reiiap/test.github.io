@@ -21,6 +21,10 @@ A production-ready developer studio website built with Next.js App Router, TypeS
 
 Phone OTP returns the code in development so the flow is testable locally. Replace that response with Twilio/Firebase delivery before production.
 
+## Prisma/Vercel compatibility note
+
+This project intentionally pins `prisma` and `@prisma/client` to the same Prisma 6 version. Do not change either package back to `latest` unless you also update the generated client import strategy, because newer major Prisma releases can change how the client is generated/imported and may make `import { PrismaClient } from "@prisma/client"` fail during Vercel type checking.
+
 ## Deploy to Vercel
 
 1. Push this repository to GitHub and import it in Vercel as a Next.js project.
