@@ -35,4 +35,4 @@ This project intentionally pins `prisma` and `@prisma/client` to the same Prisma
 6. Add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in Vercel.
 7. Run `npm run prisma:deploy` once against the production database, or run `npx prisma migrate deploy` from a secure CI/deployment step before traffic goes live.
 
-The Vercel build runs `prisma generate && next build`, and `postinstall` also generates the Prisma client so serverless functions have the generated client available.
+The Vercel build runs `prisma generate && next build`, and `postinstall` also generates the Prisma client so serverless functions have the generated client available. The project pins Node to `20.x` for Vercel and keeps `prisma` / `@prisma/client` on the same version.
