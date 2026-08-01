@@ -54,6 +54,15 @@ enum NotificationType {
   TICKET
 }
 
+enum ConversionJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  EXPIRED
+  CANCELLED
+}
+
 model User {
   id            String     @id @default(cuid())
   name          String?
@@ -76,6 +85,7 @@ model User {
   messages      TicketMessage[]
   notifications Notification[]
   resetTokens   PasswordResetToken[]
+  conversions   ConversionJob[]
 }
 
 model Account {
@@ -276,4 +286,36 @@ model Notification {
   user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, readAt])
+}
+
+model ConversionJob {
+  id                String              @id @default(cuid())
+  userId            String
+  status            ConversionJobStatus @default(PENDING)
+  originalFilename  String
+  safeFilename      String
+  inputPath         String
+  outputPath        String?
+  outputFilename    String?
+  sizeBytes         Int
+  packFormat        Int?
+  minecraftVersion  String?
+  texturesCount     Int                 @default(0)
+  modelsCount       Int                 @default(0)
+  animationsCount   Int                 @default(0)
+  otherAssetsCount  Int                 @default(0)
+  costCoins         Int                 @default(0)
+  analysis          Json?
+  warnings          String[]            @default([])
+  errorReason       String?
+  steps             Json?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  startedAt         DateTime?
+  completedAt       DateTime?
+  expiresAt         DateTime?
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([expiresAt])
 }

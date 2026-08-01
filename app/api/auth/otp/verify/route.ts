@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     let user = await prisma.user.findUnique({ where: { phone: parsed.data.phone } });
     user ??= await prisma.user.create({
-      data: { name: `Developer ${parsed.data.phone.slice(-4)}`, phone: parsed.data.phone, provider: "phone" },
+      data: { name: `Creator ${parsed.data.phone.slice(-4)}`, phone: parsed.data.phone, provider: "phone" },
     });
     await prisma.phoneOtp.update({ where: { id: otp.id }, data: { consumed: true, userId: user.id } });
 
