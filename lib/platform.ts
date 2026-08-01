@@ -25,7 +25,7 @@ export const compatibility = [
 ];
 
 export const faqs = [
-  ["Apakah Conversion engine sudah aktif?", "Belum. Fase ini menyiapkan identitas produk, UI, dan jalur arsitektur agar engine dapat ditambahkan dengan aman."],
+  ["Fitur apa yang sudah didukung sekarang?", "Saat ini sistem mendukung validasi ZIP, analisis Resource Pack, antrean job, packaging Texture PNG ke .mcpack, dan download terotorisasi. Model dan Animation belum dikonversi penuh."],
   ["Apakah harus login untuk mulai Conversion?", "Ya. Pengunjung bisa melihat informasi dan Harga Coin, tetapi proses Conversion berbayar akan membutuhkan akun."],
   ["Berapa harga Coin final?", "Harga final belum dikonfigurasi. Kartu harga saat ini adalah placeholder yang jelas untuk tahap konfigurasi bisnis berikutnya."],
   ["Apakah data akun lama dihapus?", "Tidak. Authentication, database, session, order, payment, ticket, dan admin foundation tetap dipertahankan."],

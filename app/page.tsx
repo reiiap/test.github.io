@@ -59,7 +59,7 @@ export default function Home() {
           <div>
             <p className="text-emerald-300">Preview Konverter</p>
             <h2 className="mt-3 text-4xl font-black">Unggah, atur opsi, lalu proses.</h2>
-            <p className="muted mt-4">Unauthenticated users dapat melihat alur ini. Untuk Conversion berbayar, pengguna akan diarahkan login sebelum membuat order.</p>
+            <p className="muted mt-4">Pengunjung dapat melihat alur ini. Untuk Conversion berbayar, pengguna akan diarahkan login sebelum membuat order.</p>
             <Link className="btn btn-primary mt-6" href="/converter">Mulai Konversi</Link>
           </div>
           <div className="rounded-3xl border border-dashed border-emerald-300/40 bg-black/20 p-6">
@@ -74,7 +74,7 @@ export default function Home() {
 
       <section className="section" id="harga-coin">
         <h2 className="text-4xl font-black">Harga Coin</h2>
-        <p className="muted mt-3">Gunakan Coin untuk melakukan konversi. Harga final belum dikonfigurasi dan akan dihubungkan ke payment architecture yang sudah ada.</p>
+        <p className="muted mt-3">Gunakan Coin untuk melakukan konversi. Harga final belum dikonfigurasi dan akan dihubungkan ke arsitektur payment yang sudah ada.</p>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {coinPackages.map((pack) => (
             <article className="glass rounded-3xl p-6" key={pack.name}>
