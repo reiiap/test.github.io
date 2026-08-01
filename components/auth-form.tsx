@@ -20,7 +20,7 @@ async function readJsonSafely(response: Response): Promise<ApiResult> {
     return JSON.parse(text) as ApiResult;
   } catch (error) {
     console.error("[auth-form] Server returned non-JSON response", { status: response.status, text, error });
-    return { error: "Server returned an invalid response. Please check deployment logs." };
+    return { error: "Server mengembalikan respons tidak valid. Periksa log deployment." };
   }
 }
 
@@ -44,36 +44,36 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           body: JSON.stringify({ name: formData.get("name"), email, password }),
         });
         const json = await readJsonSafely(response);
-        if (!response.ok) throw new Error(json.error ?? "Registration failed.");
-        toast.success(json.message ?? "Account created");
+        if (!response.ok) throw new Error(json.error ?? "Pendaftaran gagal.");
+        toast.success(json.message ?? "Akun berhasil dibuat");
       }
 
       const result = await signIn("credentials", { email, password, redirect: false });
-      if (result?.error) throw new Error("Invalid email or password");
+      if (result?.error) throw new Error("Email atau password tidak valid");
 
-      toast.success("Welcome back");
+      toast.success("Selamat datang kembali");
       router.push("/dashboard");
       router.refresh();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Authentication failed");
+      toast.error(error instanceof Error ? error.message : "Autentikasi gagal");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="glass mx-auto max-w-md rounded-3xl p-8">
-      <h1 className="text-3xl font-black">{mode === "login" ? "Welcome back" : "Create your studio account"}</h1>
-      <p className="muted mt-2">Secure access with Google OAuth or email credentials.</p>
-      <button onClick={() => signIn("google", { callbackUrl: "/dashboard" })} className="btn btn-primary mt-6 w-full">
-        Continue with Google
+    <div classNama="glass mx-auto max-w-md rounded-3xl p-8">
+      <h1 classNama="text-3xl font-black">{mode === "login" ? "Selamat datang kembali" : "Buat akun JvsB kamu"}</h1>
+      <p classNama="muted mt-2">Akses aman dengan Google OAuth, email, atau OTP telepon.</p>
+      <button onClick={() => signIn("google", { callbackUrl: "/dashboard" })} classNama="btn btn-primary mt-6 w-full">
+        Lanjutkan dengan Google
       </button>
-      <form onSubmit={submit} className="mt-6 space-y-4">
-        {mode === "register" && <input className="input" name="name" placeholder="Name" required minLength={2} />}
-        <input className="input" name="email" type="email" placeholder="Email" required />
-        <input className="input" name="password" type="password" placeholder="Password" required minLength={8} />
-        <button disabled={loading} className="btn btn-secondary w-full">
-          {loading ? "Securing session…" : mode === "login" ? "Login" : "Register"}
+      <form onSubmit={submit} classNama="mt-6 space-y-4">
+        {mode === "register" && <input classNama="input" name="name" placeholder="Nama" required minLength={2} />}
+        <input classNama="input" name="email" type="email" placeholder="Email" required />
+        <input classNama="input" name="password" type="password" placeholder="Password" required minLength={8} />
+        <button disabled={loading} classNama="btn btn-secondary w-full">
+          {loading ? "Mengamankan sesi…" : mode === "login" ? "Login" : "Daftar"}
         </button>
       </form>
       <PhoneOtp />
@@ -95,34 +95,34 @@ function PhoneOtp() {
     const json = await readJsonSafely(response);
     if (response.ok) {
       setDevOtp(json.devOtp ?? "");
-      toast.success("OTP generated");
+      toast.success("OTP dibuat");
     } else {
-      toast.error(json.error ?? "Failed to generate OTP");
+      toast.error(json.error ?? "Gagal membuat OTP");
     }
   }
 
   async function verifyOtp() {
     const result = await signIn("phone-otp", { phone, code, redirect: false });
     if (result?.error) {
-      toast.error("OTP is invalid or expired");
+      toast.error("OTP tidak valid atau kedaluwarsa");
     } else {
-      toast.success("Phone session started");
+      toast.success("Sesi telepon dimulai");
       window.location.href = "/dashboard";
     }
   }
 
   return (
-    <div className="mt-6 border-t border-white/10 pt-6">
-      <p className="text-sm font-bold">Phone OTP</p>
-      <div className="mt-3 grid gap-3">
-        <input className="input" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+1 555 0100" />
-        <button className="btn btn-secondary" onClick={requestOtp}>
-          Send OTP
+    <div classNama="mt-6 border-t border-white/10 pt-6">
+      <p classNama="text-sm font-bold">OTP Telepon</p>
+      <div classNama="mt-3 grid gap-3">
+        <input classNama="input" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+1 555 0100" />
+        <button classNama="btn btn-secondary" onClick={requestOtp}>
+          Kirim OTP
         </button>
-        {devOtp && <p className="text-xs text-amber-300">Development OTP: {devOtp}</p>}
-        <input className="input" value={code} onChange={(event) => setCode(event.target.value)} placeholder="6-digit code" />
-        <button className="btn btn-primary" onClick={verifyOtp}>
-          Verify phone
+        {devOtp && <p classNama="text-xs text-amber-300">OTP Development: {devOtp}</p>}
+        <input classNama="input" value={code} onChange={(event) => setCode(event.target.value)} placeholder="Kode 6 digit" />
+        <button classNama="btn btn-primary" onClick={verifyOtp}>
+          Verifikasi telepon
         </button>
       </div>
     </div>
