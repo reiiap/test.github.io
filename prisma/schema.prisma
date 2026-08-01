@@ -54,6 +54,32 @@ enum NotificationType {
   TICKET
 }
 
+enum ConversionJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  EXPIRED
+  CANCELLED
+}
+
+enum CoinTransactionType {
+  CREDIT_PURCHASE
+  CREDIT_BONUS
+  CREDIT_ADMIN
+  DEBIT_CONVERSION
+  REFUND_CONVERSION
+  DEBIT_ADJUSTMENT
+  CREDIT_ADJUSTMENT
+}
+
+enum CoinTransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
 model User {
   id            String     @id @default(cuid())
   name          String?
@@ -76,6 +102,10 @@ model User {
   messages      TicketMessage[]
   notifications Notification[]
   resetTokens   PasswordResetToken[]
+  conversions   ConversionJob[]
+  coinWallet    CoinWallet?
+  coinTransactions CoinTransaction[] @relation("CoinUserTransactions")
+  adminCoinAdjustments CoinTransaction[] @relation("CoinAdminAdjustments")
 }
 
 model Account {
@@ -276,4 +306,68 @@ model Notification {
   user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, readAt])
+}
+
+model ConversionJob {
+  id                String              @id @default(cuid())
+  userId            String
+  status            ConversionJobStatus @default(PENDING)
+  originalFilename  String
+  safeFilename      String
+  inputPath         String
+  outputPath        String?
+  outputFilename    String?
+  sizeBytes         Int
+  packFormat        Int?
+  minecraftVersion  String?
+  texturesCount     Int                 @default(0)
+  modelsCount       Int                 @default(0)
+  animationsCount   Int                 @default(0)
+  otherAssetsCount  Int                 @default(0)
+  costCoins         Int                 @default(0)
+  analysis          Json?
+  warnings          String[]            @default([])
+  errorReason       String?
+  steps             Json?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  startedAt         DateTime?
+  completedAt       DateTime?
+  expiresAt         DateTime?
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([expiresAt])
+}
+
+model CoinWallet {
+  id           String            @id @default(cuid())
+  userId       String            @unique
+  balance      Int               @default(0)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions CoinTransaction[]
+}
+
+model CoinTransaction {
+  id             String                @id @default(cuid())
+  userId         String
+  walletId       String
+  amount         Int
+  type           CoinTransactionType
+  status         CoinTransactionStatus @default(COMPLETED)
+  referenceType  String?
+  referenceId    String?
+  idempotencyKey String?               @unique
+  description    String
+  metadata       Json?
+  adminId        String?
+  createdAt      DateTime              @default(now())
+  user           User                  @relation("CoinUserTransactions", fields: [userId], references: [id], onDelete: Cascade)
+  wallet         CoinWallet            @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  admin          User?                 @relation("CoinAdminAdjustments", fields: [adminId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([referenceType, referenceId])
 }
