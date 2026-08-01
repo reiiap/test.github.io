@@ -7,6 +7,7 @@ import { createZip } from "@/lib/conversion/zip-writer";
 import { getEntryData, readZip } from "@/lib/conversion/zip";
 import { ensureDirFor, expiresAt, outputPath } from "@/lib/conversion/storage";
 import { prisma } from "@/lib/prisma";
+import { refundConversion } from "@/lib/wallet/server";
 
 const MANIFEST_VERSION = [1, 0, 0];
 const STEPS = ["Unggah Resource Pack", "Analisis", "Konversi Texture", "Konversi Model", "Packaging", "Selesai"];
@@ -33,7 +34,9 @@ export async function processConversionJob(jobId: string) {
     await fs.writeFile(outPath, createZip(files));
     await prisma.conversionJob.update({ where: { id: jobId }, data: { status: "COMPLETED", outputPath: outPath, outputFilename: outName, completedAt: new Date(), expiresAt: expiresAt(), steps: stepState(6), warnings: analysis.warnings } });
   } catch (error) {
-    await prisma.conversionJob.update({ where: { id: jobId }, data: { status: "FAILED", errorReason: safeError(error), completedAt: new Date(), steps: stepState(4, true) } });
+    const reason = safeError(error);
+    await prisma.conversionJob.update({ where: { id: jobId }, data: { status: "FAILED", errorReason: reason, completedAt: new Date(), steps: stepState(4, true) } });
+    await refundConversion(job.userId, job.id, job.costCoins, reason).catch((refundError) => console.error("[conversion:refund]", { jobId, refundError }));
   }
 }
 
