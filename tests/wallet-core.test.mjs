@@ -30,3 +30,12 @@ test('admin adjustment uses signed credit and debit amounts', () => {
 test('ledger integrity rejects zero amount', () => {
   assert.throws(() => signedAmount('credit', 0), /positif/);
 });
+
+test('coin packages are server-resolved and default packages are not priced as final commercial offers', async () => {
+  delete process.env.COIN_PACKAGES_JSON;
+  const { getCoinPackage, formatPrice } = await import('../lib/wallet/packages.ts');
+  const pack = getCoinPackage('STARTER');
+  assert.equal(pack?.coins, 50);
+  assert.equal(pack?.priceIdr, undefined);
+  assert.equal(formatPrice(pack), 'Harga dikonfigurasi admin');
+});

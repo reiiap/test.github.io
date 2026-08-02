@@ -14,8 +14,8 @@ export async function POST(_req: Request, ctx: Ctx) {
   if (!limited.ok) return NextResponse.json({ error: "Terlalu banyak permintaan konversi." }, { status: 429 });
   const { id } = await ctx.params;
   const job = await prisma.conversionJob.findFirst({ where: { id, userId: session.user.id } });
-  if (!job) return NextResponse.json({ error: "Conversion tidak ditemukan." }, { status: 404 });
-  if (job.status !== "PENDING") return NextResponse.json({ error: "Conversion ini sudah diproses atau tidak dapat dikonfirmasi." }, { status: 409 });
+  if (!job) return NextResponse.json({ error: "Konversi tidak ditemukan." }, { status: 404 });
+  if (job.status !== "PENDING") return NextResponse.json({ error: "Konversi ini sudah diproses atau tidak dapat dikonfirmasi." }, { status: 409 });
   try {
     await chargeConversion(session.user.id, job.id, job.costCoins);
   } catch (error) {

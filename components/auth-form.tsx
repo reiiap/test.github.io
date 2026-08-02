@@ -20,7 +20,7 @@ async function readJsonSafely(response: Response): Promise<ApiResult> {
     return JSON.parse(text) as ApiResult;
   } catch (error) {
     console.error("[auth-form] Server returned non-JSON response", { status: response.status, text, error });
-    return { error: "Server mengembalikan respons tidak valid. Periksa log deployment." };
+    return { error: "Server mengembalikan respons tidak valid. Coba lagi sebentar." };
   }
 }
 
@@ -62,17 +62,17 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   }
 
   return (
-    <div classNama="glass mx-auto max-w-md rounded-3xl p-8">
-      <h1 classNama="text-3xl font-black">{mode === "login" ? "Selamat datang kembali" : "Buat akun JvsB kamu"}</h1>
-      <p classNama="muted mt-2">Akses aman dengan Google OAuth, email, atau OTP telepon.</p>
-      <button onClick={() => signIn("google", { callbackUrl: "/dashboard" })} classNama="btn btn-primary mt-6 w-full">
+    <div className="glass mx-auto max-w-md rounded-3xl p-8">
+      <h1 className="text-3xl font-black">{mode === "login" ? "Selamat datang kembali" : "Buat akun JvsB kamu"}</h1>
+      <p className="muted mt-2">Akses aman dengan Google OAuth, email, atau OTP telepon.</p>
+      <button onClick={() => signIn("google", { callbackUrl: "/dashboard" })} className="btn btn-primary mt-6 w-full">
         Lanjutkan dengan Google
       </button>
-      <form onSubmit={submit} classNama="mt-6 space-y-4">
-        {mode === "register" && <input classNama="input" name="name" placeholder="Nama" required minLength={2} />}
-        <input classNama="input" name="email" type="email" placeholder="Email" required />
-        <input classNama="input" name="password" type="password" placeholder="Password" required minLength={8} />
-        <button disabled={loading} classNama="btn btn-secondary w-full">
+      <form onSubmit={submit} className="mt-6 space-y-4">
+        {mode === "register" && <input className="input" name="name" placeholder="Nama" required minLength={2} />}
+        <input className="input" name="email" type="email" placeholder="Email" required />
+        <input className="input" name="password" type="password" placeholder="Password" required minLength={8} />
+        <button disabled={loading} className="btn btn-secondary w-full">
           {loading ? "Mengamankan sesi…" : mode === "login" ? "Login" : "Daftar"}
         </button>
       </form>
@@ -112,16 +112,16 @@ function PhoneOtp() {
   }
 
   return (
-    <div classNama="mt-6 border-t border-white/10 pt-6">
-      <p classNama="text-sm font-bold">OTP Telepon</p>
-      <div classNama="mt-3 grid gap-3">
-        <input classNama="input" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+1 555 0100" />
-        <button classNama="btn btn-secondary" onClick={requestOtp}>
+    <div className="mt-6 border-t border-white/10 pt-6">
+      <p className="text-sm font-bold">OTP Telepon</p>
+      <div className="mt-3 grid gap-3">
+        <input className="input" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+62 812 3456 7890" />
+        <button className="btn btn-secondary" onClick={requestOtp}>
           Kirim OTP
         </button>
-        {devOtp && <p classNama="text-xs text-amber-300">OTP Development: {devOtp}</p>}
-        <input classNama="input" value={code} onChange={(event) => setCode(event.target.value)} placeholder="Kode 6 digit" />
-        <button classNama="btn btn-primary" onClick={verifyOtp}>
+        {devOtp && <p className="text-xs text-amber-300">OTP development: {devOtp}</p>}
+        <input className="input" value={code} onChange={(event) => setCode(event.target.value)} placeholder="Kode 6 digit" />
+        <button className="btn btn-primary" onClick={verifyOtp}>
           Verifikasi telepon
         </button>
       </div>

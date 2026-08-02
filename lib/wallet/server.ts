@@ -30,5 +30,5 @@ export async function debitCoins(input: LedgerInput) {
   });
 }
 
-export async function chargeConversion(userId: string, conversionId: string, amount: number) { return debitCoins({ userId, amount, type: "DEBIT_CONVERSION", referenceType: "CONVERSION", referenceId: conversionId, idempotencyKey: `conversion:${conversionId}:debit`, description: "Debit Coin untuk Conversion Resource Pack" }); }
-export async function refundConversion(userId: string, conversionId: string, amount: number, reason: string) { return creditCoins({ userId, amount, type: "REFUND_CONVERSION", referenceType: "CONVERSION", referenceId: conversionId, idempotencyKey: `conversion:${conversionId}:refund`, description: "Refund Coin karena Conversion gagal", metadata: { reason } }); }
+export async function chargeConversion(userId: string, conversionId: string, amount: number) { return debitCoins({ userId, amount, type: "DEBIT_CONVERSION", referenceType: "CONVERSION", referenceId: conversionId, idempotencyKey: `conversion:${conversionId}:debit`, description: "Debit Coin untuk Konversi Resource Pack" }); }
+export async function refundConversion(userId: string, conversionId: string, amount: number, reason: string) { return creditCoins({ userId, amount, type: "REFUND_CONVERSION", referenceType: "CONVERSION", referenceId: conversionId, idempotencyKey: `conversion:${conversionId}:refund`, description: "Refund Coin karena Konversi gagal", metadata: { reason } }); }
