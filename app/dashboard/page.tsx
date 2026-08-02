@@ -34,7 +34,7 @@ export default async function Dashboard() {
         <div className="mt-4 space-y-3">
           {jobs.map((job) => <div className="rounded-2xl border border-white/10 p-4 text-sm" key={job.id}>
             <div className="flex flex-col justify-between gap-2 sm:flex-row"><p className="font-semibold">{job.originalFilename}</p><span>{statusLabel[job.status] ?? job.status}</span></div>
-            <div className="muted mt-2 flex flex-wrap gap-3"><span>{job.createdAt.toLocaleDateString("id-ID")}</span><span>{job.costCoins} Coin</span>{job.status === "COMPLETED" && <Link className="text-emerald-300" href={`/api/conversions/${job.id}/download`}>Download</Link>}</div>
+            <div className="muted mt-2 flex flex-wrap gap-3"><span>{job.createdAt.toLocaleDateString("id-ID")}</span><span>{job.costCoins} Coin</span>{job.status === "COMPLETED" && <Link className="text-emerald-300" href={`/api/conversions/${job.id}/download`}>Unduh</Link>}</div>
           </div>)}
           {jobs.length === 0 && <p className="muted">Belum ada konversi.</p>}
         </div>

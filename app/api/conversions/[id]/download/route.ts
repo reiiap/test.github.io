@@ -10,7 +10,7 @@ export async function GET(_req: Request, ctx: Ctx) {
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await ctx.params;
   const job = await prisma.conversionJob.findFirst({ where: { id, userId: session.user.id } });
-  if (!job) return NextResponse.json({ error: "Conversion tidak ditemukan." }, { status: 404 });
+  if (!job) return NextResponse.json({ error: "Konversi tidak ditemukan." }, { status: 404 });
   if (job.status !== "COMPLETED" || !job.outputPath || !job.outputFilename) return NextResponse.json({ error: "Output belum tersedia." }, { status: 409 });
   if (job.expiresAt && job.expiresAt < new Date()) {
     await prisma.conversionJob.update({ where: { id: job.id }, data: { status: "EXPIRED" } });

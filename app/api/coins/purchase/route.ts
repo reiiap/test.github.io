@@ -20,6 +20,7 @@ export async function POST(req: Request) {
   if (!pack) return NextResponse.json({ error: "Paket Coin tidak tersedia." }, { status: 404 });
   if (!pack.priceIdr) return NextResponse.json({ error: "Harga paket belum dikonfigurasi di server." }, { status: 409 });
 
+  try {
   const result = await prisma.$transaction(async (tx) => {
     const order = await tx.order.create({
       data: {
@@ -52,4 +53,8 @@ export async function POST(req: Request) {
   });
 
   return NextResponse.json({ ok: true, orderId: result.order.id, status: result.payment.status, checkoutUrl: result.payment.checkoutUrl });
+  } catch (error) {
+    console.error("[coin-purchase] create payment failed", { userId: session.user.id, packageId: pack.id, error });
+    return NextResponse.json({ error: "Pembayaran belum dapat dibuat. Coba lagi nanti atau hubungi admin." }, { status: 503 });
+  }
 }

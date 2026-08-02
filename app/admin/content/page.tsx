@@ -1,2 +1,8 @@
-import { getServerSession } from "next-auth";import { redirect } from "next/navigation";import { authOptions } from "@/lib/auth";import { prisma } from "@/lib/prisma";
-export default async function AdminPage(){const s=await getServerSession(authOptions);if(!s?.user)redirect('/login');const u=await prisma.user.findUnique({where:{id:s.user.id}});if(u?.role!=='ADMIN')redirect('/dashboard');return <main className="section"><h1 className="text-4xl font-black">Admin Content</h1><p className="muted mt-3">Kelola data operasional ReiiKajurawa JvsB dari modul admin aman.</p><div className="glass mt-8 rounded-3xl p-6">Kontrol operasional tetap terhubung ke model Prisma dan siap diperluas dengan table/action UI.</div></main>}
+import { getCoinPackages, formatPrice } from "@/lib/wallet/packages";
+import { requireAdmin } from "../_helpers";
+
+export default async function AdminContentPage() {
+  await requireAdmin();
+  const packages = getCoinPackages();
+  return <main className="section"><h1 className="text-4xl font-black">Admin Paket Coin</h1><p className="muted mt-3">Konfigurasi paket dibaca dari server melalui <code>COIN_PACKAGES_JSON</code>. Browser tidak menjadi sumber harga final.</p><div className="mt-8 overflow-hidden rounded-3xl border border-white/10"><div className="grid grid-cols-2 gap-3 bg-white/5 p-4 text-sm font-bold md:grid-cols-5"><span>Paket</span><span>Coin</span><span className="hidden md:block">Harga</span><span className="hidden md:block">Status</span><span className="hidden md:block">Keterangan</span></div>{packages.map((pack) => <div className="grid grid-cols-2 gap-3 border-t border-white/10 p-4 text-sm md:grid-cols-5" key={pack.id}><span>{pack.name}</span><span>{pack.coins.toLocaleString("id-ID")} Coin</span><span className="hidden md:block">{formatPrice(pack)}</span><span className="hidden md:block">{pack.active ? "Aktif" : "Nonaktif"}</span><span className="hidden md:block">{pack.description}</span></div>)}</div></main>;
+}
